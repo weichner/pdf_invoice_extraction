@@ -1,7 +1,6 @@
 from datetime import datetime, date
 from enum import Enum
 from typing import Union
-
 from pydantic import BaseModel, Field
 
 
@@ -27,3 +26,6 @@ class Invoices(BaseModel):
     invoice_type: InvoiceTypes
 
 
+class GetManyInvoicesResponse(BaseModel):
+    invoices: list[Invoices]
+    count: int

@@ -87,6 +87,22 @@ def extract_data_invoice_a(path_to_pdf):
     return invoice_info
 
 
+def generate_invoice_from_tuple(row_tuple):
+    invoice_info_dict = {
+        "vendor_name": row_tuple[1],
+        "contact_method": row_tuple[2],
+        "amount_spent": row_tuple[3],
+        "purchase_date": row_tuple[4],
+        "company_name": row_tuple[5],
+        "company_address": row_tuple[6],
+        "invoice_number": row_tuple[7],
+        "total_products": row_tuple[8],
+        "products_names": row_tuple[9],
+        "invoice_type": row_tuple[10]
+    }
+    return Invoices(**invoice_info_dict)
+
+
 def extract_data_invoice_b(path_to_pdf):
     result = extract_data_invoice(path_to_pdf)
     return result

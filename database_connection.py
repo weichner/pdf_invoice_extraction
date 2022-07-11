@@ -15,13 +15,22 @@ class SQLClient:
         query = db.select([self.invoices]).where(self.invoices.c.id == invoice_id)
         with self.engine.connect() as conn:
             result = conn.execute(query)
-        return result.fetchall()
+            row = result.fetchall()
+        return row
+
+    def get_by_type(self, invoice_type: str):
+        query = db.select([self.invoices]).where(self.invoices.c.invoice_type == invoice_type)
+        with self.engine.connect() as conn:
+            result = conn.execute(query)
+            rows = result.fetchall()
+        return rows
 
     def get_all(self):
         query = db.select([self.invoices])
         with self.engine.connect() as conn:
             result = conn.execute(query)
-        return result.fetchall()
+            rows = result.fetchall()
+        return rows
 
     def insert_one(self, invoice_body):
         query = db.insert(self.invoices).values(invoice_body)
