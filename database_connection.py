@@ -62,7 +62,7 @@ class SQLClient:
         query = query.where(self.invoices.c.id == invoice_id)
         with self.engine.connect() as conn:
             result = conn.execute(query)
-        return result.fetchone()
+        return result
 
     def delete_many(self, invoice_id):
         pass

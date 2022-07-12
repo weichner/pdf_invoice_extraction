@@ -44,8 +44,8 @@ async def get_by_type(invoice_type: InvoiceTypes):
     return invoices
 
 
-@app.delete('/register/{id}', response_model=Invoices)
-async def delete(invoice_id: int):
-    delete_invoice = await delete(invoice_id)
-    return delete_invoice
+@app.delete('/register/{invoice_id}')
+async def delete_one_invoice(invoice_id: int):
+    await delete(invoice_id)
+    return JSONResponse(content=f"Invoice ID:{invoice_id} has been successfully deleted", status_code=status.HTTP_200_OK)
 
