@@ -18,8 +18,8 @@ class Invoices(BaseModel):
     contact_method: str
     amount_spent: float
     purchase_date: date
-    company_name: str
-    company_address: str
+    payment_method: str
+    vendor_address: str
     invoice_number: int
     total_products: int
     products_names: str

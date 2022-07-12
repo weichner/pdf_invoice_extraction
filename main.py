@@ -46,6 +46,6 @@ async def get_by_type(invoice_type: InvoiceTypes):
 
 @app.delete('/register/{id}', response_model=Invoices)
 async def delete(invoice_id: int):
-    invoice = await delete(invoice_id)
-    return invoice
+    delete_invoice = await delete(invoice_id)
+    return delete_invoice
 

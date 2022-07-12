@@ -59,7 +59,6 @@ async def get_all_invoices():
 
 
 async def delete(invoice_id):
-    invoice = invoices_db.delete().where(invoices_db.c.invoice_id == invoice_id)
-    result = await invoices_db.execute(invoice)
-    return result
+    delete_invoice = invoices_db.delete_one(invoice_id)
+    return delete_invoice
 
