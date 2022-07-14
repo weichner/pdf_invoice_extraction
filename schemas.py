@@ -18,7 +18,7 @@ class Invoices(BaseModel):
     contact_method: str
     amount_spent: float
     purchase_date: date
-    payment_method: Optional[str]
+    payment_information: Optional[str]
     vendor_address: Optional[str]
     invoice_number: str
     units_by_product: str

@@ -45,7 +45,7 @@ class SQLClient:
             contact_method=doc.contact_method,
             amount_spent=doc.amount_spent,
             purchase_date=doc.purchase_date,
-            payment_method=doc.payment_method,
+            payment_information=doc.payment_information,
             company_address=doc.vendor_address,
             invoice_number=doc.invoice_number,
             total_products=doc.total_products,
