@@ -1,5 +1,5 @@
 from database_connection import invoices_db
-from helpers import extract_data_invoice_a, extract_data_invoice_b,generate_invoice_from_tuple
+from helpers import extract_data_invoice_a, extract_data_invoice_b, generate_invoice_from_tuple
 from schemas import InvoiceTypes, Invoices, GetManyInvoicesResponse
 from exceptions import InvoiceInsertionError
 from fastapi import status
@@ -8,7 +8,8 @@ from fastapi import status
 async def create_invoice(path_to_pdf: str, invoice_type: InvoiceTypes) -> Invoices:
     # extraer la informacion del pdf
     extract_data_by_type = {
-        InvoiceTypes.a: extract_data_invoice_a
+        InvoiceTypes.a: extract_data_invoice_a,
+        InvoiceTypes.b: extract_data_invoice_b
     }
 
     invoice_info: dict = extract_data_by_type[invoice_type](path_to_pdf)

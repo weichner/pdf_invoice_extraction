@@ -1,5 +1,4 @@
 from datetime import datetime
-
 from schemas import Invoices
 import pdfplumber
 import re
@@ -13,6 +12,29 @@ def extract_pdf_text(path_to_pdf):
             pdf_text += page.extract_text()
 
     return pdf_text
+
+
+def generate_invoice_from_tuple(row_tuple):
+    invoice_info_dict = {
+        "vendor_name": row_tuple[1],
+        "contact_method": row_tuple[2],
+        "amount_spent": row_tuple[3],
+        "purchase_date": row_tuple[4],
+        "payment_method": row_tuple[5],
+        "vendor_address": row_tuple[6],
+        "invoice_number": row_tuple[7],
+        "units_by_product": row_tuple[8],
+        "products_names": row_tuple[9],
+        "invoice_type": row_tuple[10]
+    }
+    return Invoices(**invoice_info_dict)
+
+
+def check_empty_list_for_findall(findall_list: list):
+    if len(findall_list) == 0:
+        return None
+    else:
+        return findall_list[0]
 
 
 def extract_data_invoice(path_to_pdf: str, vendor_name_pattern, contact_method_pattern,
@@ -32,13 +54,13 @@ def extract_data_invoice(path_to_pdf: str, vendor_name_pattern, contact_method_p
         "invoice_number_pattern": re.compile(invoice_number_pattern)
     }
 
-    vendor_name_value = patterns["vendor_name_pattern"].findall(pdf_text)[0]
-    contact_method_value = patterns["contact_method_pattern"].findall(pdf_text)[0]
-    amount_spent_value = patterns["amount_spent_pattern"].findall(pdf_text)[0]
-    purchase_date_value = patterns["purchase_date_pattern"].findall(pdf_text)[0]
-    payment_method_value = patterns["payment_method_pattern"].findall(pdf_text)[0]
-    vendor_address_value = patterns["vendor_address_pattern"].findall(pdf_text)[0]
-    invoice_number_value = patterns["invoice_number_pattern"].findall(pdf_text)[0]
+    vendor_name_value = check_empty_list_for_findall(patterns["vendor_name_pattern"].findall(pdf_text))
+    contact_method_value = check_empty_list_for_findall(patterns["contact_method_pattern"].findall(pdf_text))
+    amount_spent_value = check_empty_list_for_findall(patterns["amount_spent_pattern"].findall(pdf_text))
+    purchase_date_value = check_empty_list_for_findall(patterns["purchase_date_pattern"].findall(pdf_text))
+    payment_method_value = check_empty_list_for_findall(patterns["payment_method_pattern"].findall(pdf_text))
+    vendor_address_value = check_empty_list_for_findall(patterns["vendor_address_pattern"].findall(pdf_text))
+    invoice_number_value = check_empty_list_for_findall(patterns["invoice_number_pattern"].findall(pdf_text))
 
     data_dict = {
         "vendor_name": vendor_name_value,
@@ -71,39 +93,51 @@ def extract_data_invoice_a(path_to_pdf):
             index_after_products = lines.index(line)
     list_products = lines[index_before_products + 1:index_after_products]
     # Para saber cantidad total de productos
-    total_products = 0
+    units_by_product = []
     products_names = []
     for info_product in list_products:
-        total_products += int(info_product.split()[-3])
+        units_by_product.append(int(info_product.split()[-3]))
         product_name = ' '.join(info_product.split()[-4::-1][::-1])
         products_names.append(product_name)
 
     products_info = {
         "products_names": str(products_names),
-        "total_products": total_products
+        "units_by_product": str(units_by_product)
     }
     invoice_info = {**result, **products_info}
 
     return invoice_info
 
 
-def generate_invoice_from_tuple(row_tuple):
-    invoice_info_dict = {
-        "vendor_name": row_tuple[1],
-        "contact_method": row_tuple[2],
-        "amount_spent": row_tuple[3],
-        "purchase_date": row_tuple[4],
-        "payment_method": row_tuple[5],
-        "vendor_address": row_tuple[6],
-        "invoice_number": row_tuple[7],
-        "total_products": row_tuple[8],
-        "products_names": row_tuple[9],
-        "invoice_type": row_tuple[10]
-    }
-    return Invoices(**invoice_info_dict)
-
-
 def extract_data_invoice_b(path_to_pdf):
-    result = extract_data_invoice(path_to_pdf)
-    return result
+    result = extract_data_invoice(path_to_pdf, vendor_name_pattern=r'\n(.+) Payment Method\n',
+                                  contact_method_pattern=r'Payment Method\n(\+\d+\s-\s\d+\s-\s\d+).+\n',
+                                  amount_spent_pattern=r'\n\$(\d+)\n',
+                                  purchase_date_pattern=r'\nDate : (.+)\n',
+                                  payment_method_pattern=r'Payment Method\n\+\d+\s-\s\d+\s-\s\d+(.+)\n',
+                                  vendor_address_pattern=r'randompattern1(.)2random',
+                                  invoice_number_pattern=r'\nNo : (.+)\n')
 
+    result['purchase_date'] = datetime.strptime(result['purchase_date'], "%m/%d/%Y")
+    text = extract_pdf_text(path_to_pdf)
+    lines = text.split('\n')
+    index_before_products = lines.index('Description Qty Price Total')
+    for line in lines:
+        if line.replace(" ", "").endswith("Total:"):
+            index_after_products = lines.index(line)
+    list_products = lines[index_before_products + 1:index_after_products - 1]
+    # Para saber cantidad total de productos
+    units_by_product = []
+    products_names = []
+    for info_product in list_products:
+        units_by_product.append(int(info_product.split()[-3]))
+        product_name = ' '.join(info_product.split()[-4::-1][::-1])
+        products_names.append(product_name)
+
+    products_info = {
+        "products_names": str(products_names),
+        "units_by_product": str(units_by_product)
+    }
+
+    invoice_info = {**result, **products_info}
+    return invoice_info

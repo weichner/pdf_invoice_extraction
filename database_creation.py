@@ -11,10 +11,10 @@ register = sqlalchemy.Table(
     sqlalchemy.Column("contact_method", sqlalchemy.String, nullable=False),
     sqlalchemy.Column("amount_spent", sqlalchemy.Float, nullable=False),
     sqlalchemy.Column("purchase_date", sqlalchemy.DateTime(), nullable=False),
-    sqlalchemy.Column("payment_method", sqlalchemy.String(length=500), nullable=False),
-    sqlalchemy.Column("vendor_address", sqlalchemy.String(length=500), nullable=False),
-    sqlalchemy.Column("invoice_number", sqlalchemy.Integer, nullable=False),
-    sqlalchemy.Column("total_products", sqlalchemy.Integer, nullable=False),
+    sqlalchemy.Column("payment_method", sqlalchemy.String(length=500), nullable=True),
+    sqlalchemy.Column("vendor_address", sqlalchemy.String(length=500), nullable=True),
+    sqlalchemy.Column("invoice_number", sqlalchemy.String, nullable=False),
+    sqlalchemy.Column("units_by_product", sqlalchemy.String, nullable=False),
     sqlalchemy.Column("products_names", sqlalchemy.String, nullable=False),
     sqlalchemy.Column("invoice_type", sqlalchemy.String, nullable=False)
 )

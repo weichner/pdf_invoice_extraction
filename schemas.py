@@ -1,6 +1,6 @@
 from datetime import datetime, date
 from enum import Enum
-from typing import Union
+from typing import Union, Optional
 from pydantic import BaseModel, Field
 
 
@@ -18,10 +18,10 @@ class Invoices(BaseModel):
     contact_method: str
     amount_spent: float
     purchase_date: date
-    payment_method: str
-    vendor_address: str
-    invoice_number: int
-    total_products: int
+    payment_method: Optional[str]
+    vendor_address: Optional[str]
+    invoice_number: str
+    units_by_product: str
     products_names: str
     invoice_type: InvoiceTypes
 
