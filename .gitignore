@@ -2,3 +2,4 @@ venv_fastapi/
 __pycache__/
 .idea/
 credentials.py
+run_local.sh
