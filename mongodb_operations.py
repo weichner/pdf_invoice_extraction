@@ -1,14 +1,10 @@
-from typing import Union
-
 from mongodb_connection import invoices_mongodb
 from database_connection import invoices_db
 from helpers import extract_data_invoice_a, extract_data_invoice_b, extract_data_invoice_c, generate_invoice_from_tuple
-from schemas import InvoiceTypes, Invoices, GetManyInvoicesResponse, InvoicesMongo
-from exceptions import InvoiceInsertionError
-from fastapi import status
+from schemas import InvoiceTypes, GetManyInvoicesResponse, InvoicesMongo
 
 
-async def create_invoice(path_to_pdf: str, invoice_type: InvoiceTypes) -> Invoices:
+async def create_invoice(path_to_pdf: str, invoice_type: InvoiceTypes) -> InvoicesMongo:
     # extraer la informacion del pdf
     extract_data_by_type = {
         InvoiceTypes.a: extract_data_invoice_a,
@@ -18,18 +14,10 @@ async def create_invoice(path_to_pdf: str, invoice_type: InvoiceTypes) -> Invoic
 
     invoice_info: dict = extract_data_by_type[invoice_type](path_to_pdf)
     full_invoice_info = {**invoice_info, **{'invoice_type': invoice_type}}
-    full_invoice_info_sql = full_invoice_info.copy()
-    full_invoice_info_sql['products_names'] = str(full_invoice_info_sql['products_names'])
-    full_invoice_info_sql['units_by_product'] = str(full_invoice_info_sql['units_by_product'])
-    invoice_data_for_sql = Invoices(**full_invoice_info_sql)
-    print(invoice_data_for_sql)
-
-    # insercion en la base de SQL
-    invoices_db.insert_one(invoice_data_for_sql.dict())
-    if invoices_db is None:
-        raise InvoiceInsertionError(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-                                    detail=f"Insertion to database has an error.")
-    return invoice_data_for_sql
+    # insercion de la base de mongodb
+    invoice_result = await invoices_mongodb.insert_one(document=InvoicesMongo(**full_invoice_info).dict())
+    print(f'mongodb result = {invoice_result}')
+    return InvoicesMongo(**full_invoice_info)
 
 
 async def get_one_invoice(invoice_id: int):

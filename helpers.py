@@ -101,8 +101,8 @@ def extract_data_invoice_a(path_to_pdf):
         products_names.append(product_name)
 
     products_info = {
-        "products_names": str(products_names),
-        "units_by_product": str(units_by_product)
+        "products_names": products_names,
+        "units_by_product": units_by_product
     }
     invoice_info = {**result, **products_info}
 
@@ -135,8 +135,8 @@ def extract_data_invoice_b(path_to_pdf):
         products_names.append(product_name)
 
     products_info = {
-        "products_names": str(products_names),
-        "units_by_product": str(units_by_product)
+        "products_names": products_names,
+        "units_by_product": units_by_product
     }
 
     invoice_info = {**result, **products_info}
@@ -169,8 +169,8 @@ def extract_data_invoice_c(path_to_pdf):
         products_names.append(product_name)
 
     products_info = {
-        "products_names": str(products_names),
-        "units_by_product": str(units_by_product)
+        "products_names": products_names,
+        "units_by_product": units_by_product
     }
     invoice_info = {**result, **products_info}
 
