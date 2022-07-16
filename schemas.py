@@ -41,3 +41,8 @@ class InvoicesMongo(BaseModel):
     units_by_product: list
     products_names: list
     invoice_type: InvoiceTypes
+
+
+class GetManyInvoicesResponseMongo(BaseModel):
+    invoices: list[InvoicesMongo]
+    count: int

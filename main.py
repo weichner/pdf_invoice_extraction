@@ -5,7 +5,7 @@ from fastapi.params import File
 from fastapi.responses import JSONResponse
 import database_operations as sqldb
 import mongodb_operations as mongodb
-from schemas import Invoices, InvoiceTypes, GetManyInvoicesResponse
+from schemas import Invoices, InvoiceTypes, GetManyInvoicesResponse, GetManyInvoicesResponseMongo
 from exceptions import InvoiceInsertionError
 
 app = FastAPI()
@@ -46,6 +46,12 @@ async def handle_form_mongo(invoice_type: InvoiceTypes, invoice: UploadFile = Fi
 @app.get('/register/', response_model=GetManyInvoicesResponse)
 async def get_all():
     invoice = await sqldb.get_all_invoices()
+    return invoice
+
+
+@app.get('/register_mongo/', response_model=GetManyInvoicesResponseMongo)
+async def get_all_mongo():
+    invoice = await mongodb.get_all_invoices()
     return invoice
 
 

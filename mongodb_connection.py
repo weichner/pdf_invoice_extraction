@@ -11,7 +11,13 @@ class DatabaseMongoDB:
         self.collection = self.__db[collection]
 
     async def get_all(self):
-        return self.collection.find()
+        cursor = self.collection.find({})
+        results = [doc async for doc in cursor]
+        results_count = await self.collection.count_documents({})
+        return {
+            'docs': results,
+            'count': results_count
+        }
 
     async def get_one(self, key: dict):
         """Get one doc by key from collection"""
