@@ -67,6 +67,12 @@ async def get_by_type(invoice_type: InvoiceTypes):
     return invoices
 
 
+@app.get('/register_by_type_mongo/', response_model=GetManyInvoicesResponseMongo)
+async def get_by_type_mongo(invoice_type: InvoiceTypes):
+    invoices = await mongodb.get_invoices_by_type(invoice_type)
+    return invoices
+
+
 @app.delete('/register/{invoice_id}')
 async def delete_one_invoice(invoice_id: int):
     await sqldb.delete(invoice_id)

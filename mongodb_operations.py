@@ -20,23 +20,16 @@ async def create_invoice(path_to_pdf: str, invoice_type: InvoiceTypes) -> Invoic
     return InvoicesMongo(**full_invoice_info)
 
 
-async def get_one_invoice(invoice_id: int):
-    filtered_invoices = invoices_db.get_one(invoice_id)
-    invoice = generate_invoice_from_tuple(filtered_invoices[0])
-    return invoice
-
-
 async def get_invoices_by_type(invoice_type: InvoiceTypes):
-    filtered_invoices = invoices_db.get_by_type(invoice_type)
+    filtered_invoices = await invoices_mongodb.get_by_type(invoice_type)
     invoices = []
-    for invoice in filtered_invoices:
-        invoices.append(generate_invoice_from_tuple(invoice))
-        print(invoice)
+    for invoice in filtered_invoices['docs']:
+        invoices.append(InvoicesMongo(**invoice))
     invoices_result_dict = {
         'invoices': invoices,
-        'count': len(invoices),
+        'count': filtered_invoices['count'],
     }
-    return GetManyInvoicesResponse(**invoices_result_dict)
+    return GetManyInvoicesResponseMongo(**invoices_result_dict)
 
 
 async def get_all_invoices():

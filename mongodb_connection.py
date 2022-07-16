@@ -19,10 +19,14 @@ class DatabaseMongoDB:
             'count': results_count
         }
 
-    async def get_one(self, key: dict):
-        """Get one doc by key from collection"""
-        doc = await self.collection.find_one(key)
-        return doc
+    async def get_by_type(self, invoice_type: dict):
+        cursor = self.collection.find({'invoice_type': invoice_type})
+        results = [doc async for doc in cursor]
+        results_count = await self.collection.count_documents({'invoice_type': invoice_type})
+        return {
+            'docs': results,
+            'count': results_count
+        }
 
     async def insert_one(self, document: dict):
         result = await self.collection.insert_one(document)
