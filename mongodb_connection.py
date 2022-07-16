@@ -1,4 +1,5 @@
 import os
+from bson import ObjectId
 from motor.motor_asyncio import AsyncIOMotorClient
 
 
@@ -32,8 +33,8 @@ class DatabaseMongoDB:
         result = await self.collection.insert_one(document)
         return result
 
-    async def delete_one(self, key: dict):
-        result = await self.collection.delete_one(key)
+    async def delete_one(self, _idmongo: str):
+        result = await self.collection.delete_one({'_id': ObjectId(_idmongo)})
         return result
 
 

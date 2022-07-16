@@ -1,9 +1,7 @@
 import datetime
 from enum import Enum
-from typing import Union, Optional
-
-from bson import ObjectId
-from pydantic import BaseModel, Field
+from typing import Optional
+from pydantic import BaseModel
 
 
 class InvoiceTypes(str, Enum):
@@ -43,6 +41,20 @@ class InvoicesMongo(BaseModel):
     invoice_type: InvoiceTypes
 
 
+class InvoicesMongoGet(BaseModel):
+    id: str
+    vendor_name: str
+    contact_method: str
+    amount_spent: float
+    purchase_date: datetime.datetime
+    payment_information: Optional[str]
+    vendor_address: Optional[str]
+    invoice_number: str
+    units_by_product: list
+    products_names: list
+    invoice_type: InvoiceTypes
+
+
 class GetManyInvoicesResponseMongo(BaseModel):
-    invoices: list[InvoicesMongo]
+    invoices: list[InvoicesMongoGet]
     count: int

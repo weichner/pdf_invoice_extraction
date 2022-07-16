@@ -1,7 +1,7 @@
 from mongodb_connection import invoices_mongodb
 from database_connection import invoices_db
 from helpers import extract_data_invoice_a, extract_data_invoice_b, extract_data_invoice_c, generate_invoice_from_tuple
-from schemas import InvoiceTypes, GetManyInvoicesResponse, InvoicesMongo, GetManyInvoicesResponseMongo
+from schemas import InvoiceTypes, GetManyInvoicesResponse, InvoicesMongo, GetManyInvoicesResponseMongo, InvoicesMongoGet
 
 
 async def create_invoice(path_to_pdf: str, invoice_type: InvoiceTypes) -> InvoicesMongo:
@@ -24,7 +24,8 @@ async def get_invoices_by_type(invoice_type: InvoiceTypes):
     filtered_invoices = await invoices_mongodb.get_by_type(invoice_type)
     invoices = []
     for invoice in filtered_invoices['docs']:
-        invoices.append(InvoicesMongo(**invoice))
+        invoice['id'] = invoice['_id'].binary.hex()
+        invoices.append(InvoicesMongoGet(**invoice))
     invoices_result_dict = {
         'invoices': invoices,
         'count': filtered_invoices['count'],
@@ -34,9 +35,11 @@ async def get_invoices_by_type(invoice_type: InvoiceTypes):
 
 async def get_all_invoices():
     filtered_invoices = await invoices_mongodb.get_all()
+    #print(filtered_invoices)
     invoices = []
     for invoice in filtered_invoices['docs']:
-        invoices.append(InvoicesMongo(**invoice))
+        invoice['id'] = invoice['_id'].binary.hex()
+        invoices.append(InvoicesMongoGet(**invoice))
     invoices_result_dict = {
         'invoices': invoices,
         'count': filtered_invoices['count'],
@@ -45,6 +48,6 @@ async def get_all_invoices():
 
 
 async def delete(invoice_id):
-    delete_invoice = invoices_db.delete_one(invoice_id)
+    delete_invoice = await invoices_mongodb.delete_one(invoice_id)
     return delete_invoice
 

@@ -79,3 +79,10 @@ async def delete_one_invoice(invoice_id: int):
     return JSONResponse(content=f"Invoice ID:{invoice_id} has been successfully deleted",
                         status_code=status.HTTP_200_OK)
 
+
+@app.delete('/register_mongo/{invoice_id}')
+async def delete_one_invoice_mongo(_idmongo: str):
+    await mongodb.delete(_idmongo)
+    return JSONResponse(content=f"Invoice ID:{_idmongo} has been successfully deleted",
+                        status_code=status.HTTP_200_OK)
+
