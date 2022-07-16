@@ -1,8 +1,6 @@
 import sqlalchemy as db
 from fastapi import Depends
-
-
-from schemas import Invoices, InvoiceTypes
+from backend.schemas import Invoices, InvoiceTypes
 
 
 class SQLClient:
@@ -68,4 +66,4 @@ class SQLClient:
         pass
 
 
-invoices_db = SQLClient("sqlite:///store.db", "invoices")
+invoices_db = SQLClient("sqlite:///backend/store.db", "invoices")

@@ -19,7 +19,7 @@ register = sqlalchemy.Table(
     sqlalchemy.Column("invoice_type", sqlalchemy.String, nullable=False)
 )
 
-DATABASE_URL = "sqlite:///store.db"
+DATABASE_URL = "sqlite:///backend/store.db"
 database = databases.Database(DATABASE_URL)
 engine = sqlalchemy.create_engine(
     DATABASE_URL, connect_args={"check_same_thread": False}

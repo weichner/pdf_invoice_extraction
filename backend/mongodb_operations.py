@@ -1,7 +1,6 @@
-from mongodb_connection import invoices_mongodb
-from database_connection import invoices_db
-from helpers import extract_data_invoice_a, extract_data_invoice_b, extract_data_invoice_c, generate_invoice_from_tuple
-from schemas import InvoiceTypes, GetManyInvoicesResponse, InvoicesMongo, GetManyInvoicesResponseMongo, InvoicesMongoGet
+from backend.mongodb_connection import invoices_mongodb
+from backend.helpers import extract_data_invoice_a, extract_data_invoice_b, extract_data_invoice_c
+from backend.schemas import InvoiceTypes, InvoicesMongo, GetManyInvoicesResponseMongo, InvoicesMongoGet
 
 
 async def create_invoice(path_to_pdf: str, invoice_type: InvoiceTypes) -> InvoicesMongo:

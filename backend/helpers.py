@@ -1,9 +1,7 @@
 from datetime import datetime
-from schemas import Invoices
+from backend.schemas import Invoices
 import pdfplumber
 import re
-import pandas as pd
-
 
 def extract_pdf_text(path_to_pdf):
     with pdfplumber.open(path_to_pdf) as pdf:

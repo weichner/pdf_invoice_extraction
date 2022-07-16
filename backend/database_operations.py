@@ -1,10 +1,7 @@
-from typing import Union
-
-from mongodb_connection import invoices_mongodb
-from database_connection import invoices_db
-from helpers import extract_data_invoice_a, extract_data_invoice_b, extract_data_invoice_c, generate_invoice_from_tuple
-from schemas import InvoiceTypes, Invoices, GetManyInvoicesResponse, InvoicesMongo
-from exceptions import InvoiceInsertionError
+from backend.database_connection import invoices_db
+from backend.helpers import extract_data_invoice_a, extract_data_invoice_b, extract_data_invoice_c, generate_invoice_from_tuple
+from backend.schemas import InvoiceTypes, Invoices, GetManyInvoicesResponse, InvoicesMongo
+from backend.exceptions import InvoiceInsertionError
 from fastapi import status
 
 

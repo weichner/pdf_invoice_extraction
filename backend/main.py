@@ -3,17 +3,17 @@ from typing import List
 from fastapi import FastAPI, UploadFile, status
 from fastapi.params import File
 from fastapi.responses import JSONResponse
-import database_operations as sqldb
-import mongodb_operations as mongodb
-from schemas import Invoices, InvoiceTypes, GetManyInvoicesResponse, GetManyInvoicesResponseMongo
-from exceptions import InvoiceInsertionError
+import backend.database_operations as sqldb
+import backend.mongodb_operations as mongodb
+from backend.schemas import Invoices, InvoiceTypes, GetManyInvoicesResponse, GetManyInvoicesResponseMongo
+from backend.exceptions import InvoiceInsertionError
 
 app = FastAPI()
 
 
 @app.post("/upload_invoice", status_code=status.HTTP_201_CREATED)
 async def handle_form(invoice_type: InvoiceTypes, invoice: UploadFile = File(...)):
-    path_to_pdf = f"invoices/{invoice_type}/{invoice.filename}"
+    path_to_pdf = f"backend/invoices/{invoice_type}/{invoice.filename}"
     with open(path_to_pdf, "wb") as buffer:
         shutil.copyfileobj(invoice.file, buffer)
 
@@ -29,7 +29,7 @@ async def handle_form(invoice_type: InvoiceTypes, invoice: UploadFile = File(...
 
 @app.post("/upload_invoice_mongo", status_code=status.HTTP_201_CREATED)
 async def handle_form_mongo(invoice_type: InvoiceTypes, invoice: UploadFile = File(...)):
-    path_to_pdf = f"invoices/{invoice_type}/{invoice.filename}"
+    path_to_pdf = f"backend/invoices/{invoice_type}/{invoice.filename}"
     with open(path_to_pdf, "wb") as buffer:
         shutil.copyfileobj(invoice.file, buffer)
 
