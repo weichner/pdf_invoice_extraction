@@ -9,7 +9,12 @@ This application takes one of the invoice you choose (A, B, or C). The invoice y
 This helps the user to be able to see the invoice information in a better way and saves that information in
 a database.
 The application was developed with Python and FastAPI using libraries like PDFplumber, REgex.
-The databases implemented were SQLalchemy and MongoDB.
+For the SQL database I used SQLite and SQLAlchemy and for the NoSQL database I used MongoDB and MongoDB engine. 
+The application consists of 9 Endpoints such as POST, GET and DELETE
+
+📌 Link to the application:
+
+[PDF Invoice Extraction](https://extract-pdf-weichner.herokuapp.com/docs#/)
 ___
 ___
 
@@ -63,15 +68,32 @@ ___
 
 **Why I created this app**
 
-Since the first moment I decide to become a developer was because I wanted to innovate and create good things which are
-to help other developers/people/companies.
+Since the first moment I decided to become a developer was because I wanted to innovate and create good things which are
+going to help other developers/people/companies.
 I found very interesting to create this application because is very useful to be able to detail every important point of
-the invoice you are using and be able to keep that data in a database is simply wonderful
+the invoice you are using and be able to keep that data in a database is simply wonderful.
+
 
 ___
 ___
 
 **Made with:**
 
-- [x] Python
-- [x] FastAPI
+✔️Python
+
+✔️FastAPI
+
+✔️SQLalchemy
+
+✔️MongoDB
+
+___
+___
+
+**Contact:**
+
+Werner F. Eichner G. 
+
++351 911 053 792
+
+LinkedIn: https://www.linkedin.com/in/weichner/
