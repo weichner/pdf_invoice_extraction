@@ -3,6 +3,7 @@ from backend.schemas import Invoices
 import pdfplumber
 import re
 
+
 def extract_pdf_text(path_to_pdf):
     with pdfplumber.open(path_to_pdf) as pdf:
         pdf_text = ""
